@@ -1,0 +1,61 @@
+### [Visual Studio / .NET]
+
+### Pastas de build (compilação)
+
+[Bb]in/
+[Oo]bj/
+[Log]s/ 
+
+### Arquivos gerados pelo User (configurações locais da IDE)
+
+*.user
+*.userosscache
+*.sln.docstates 
+
+### Pastas de ferramentas e cache do Visual Studio
+
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.clw
+*.ncb
+*.aps 
+
+### [Ferramentas de Build e Pacotes]
+
+### Pacotes NuGet restaurados automaticamente
+
+packages/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json 
+
+### Cache do Omnisharp e Rider (se usar outras IDEs)
+
+.idea/
+.krad/
+.paket/ 
+
+### [Segurança e Configurações Sensíveis]
+
+### Segredos de desenvolvimento e configurações locais
+
+appsettings.Development.json
+appsettings.Local.json
+*.secrets.json
+.env
+.env.* 
+
+### [Sistema Operacional]
+
+### Arquivos do Windows / macOS
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
