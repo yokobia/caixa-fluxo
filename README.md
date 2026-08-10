@@ -20,6 +20,78 @@ A aplicação foi estruturada seguindo os princípios de **Clean Architecture** 
     *   📂 **CaixaFluxo.API:** Controladores HTTP, Rotas REST e configuração de DI
     *   📂 **CaixaFluxo.Tests:** Testes Unitários automatizados com xUnit e Moq
 
+### 1. Diagrama de Camadas e Dependências (Clean Architecture)
+Este diagrama representa o isolamento do ecossistema. A regra de ouro aqui é: as camadas externas conhecem as internas, mas as internas nunca conhecem nada do mundo externo.
+
+    ┌─────────────────────────────────────────────────────────┐
+    │                 CAIXAFLUXO.API (Apresentação)           │
+    │  - Controllers HTTP                                     │
+    │  - Program.cs / Configuração de DI                      │
+    └────────────────────┬───────────────┬────────────────────┘
+                         │               │
+                         │               ▼
+                         │     ┌──────────────────────────────┐
+                         │     │  CAIXAFLUXO.INFRASTRUCTURE   │
+                         │     │  - InMemoryDbContext         │
+                         │     │  - LancamentoRepository      │
+                         └─────┼───────────────┬──────────────┘
+                               │               │
+                               ▼               ▼
+    ┌─────────────────────────────────────────────────────────┐
+    │                 CAIXAFLUXO.APPLICATION                  │
+    │  - Use Cases (Registrar / Consolidar)                   │
+    │  - Interfaces (ILancamentoRepository)                   │
+    │  - Validators (FluentValidation) / DTOs                 │
+    └────────────────────────────┬────────────────────────────┘
+                                 │
+                                 ▼
+    ┌─────────────────────────────────────────────────────────┐
+    │                    CAIXAFLUXO.DOMAIN                    │
+    │  - Regras de Negócio Puras / Entidades Core             │
+    │  - (Nível máximo de isolamento - dependência zero)      │
+    └─────────────────────────────────────────────────────────┘
+
+### 2. Diagrama de Fluxo de Dados (Registro de Lançamento)
+Este diagrama detalha o comportamento interno do sistema desde o momento em que um cliente realiza um disparo HTTP POST até o salvamento seguro e resiliente na memória do servidor.
+
+    ┌───────────────────┐
+    │ Cliente / Postman │
+    └──────┬────────────┘
+           │
+           │ HTTP POST /api/lancamentos (JSON)
+           ▼
+    ┌────────────────────────────────────────────────────────┐
+    │ CaixaFluxo.API -> LancamentosController                │
+    └──────┬─────────────────────────────────────────────────┘
+           │
+           │ Injeta e executa o Caso de Uso
+           ▼
+    ┌────────────────────────────────────────────────────────┐
+    │ CaixaFluxo.Application -> RegistrarLancamentoUseCase   │
+    └───┬────────────────────────────────────────────────────┘
+        │
+        ├─► [ Validação ] ──► Executa CriarLancamentoRequestValidator (FluentValidation)
+        │                     (Se falhar: Lança erro e o Controller retorna 400 BadRequest)
+        │
+        │ Se válido: Repassa dados para a abstração do repositório
+        ▼
+    ┌────────────────────────────────────────────────────────┐
+    │ CaixaFluxo.Application -> ILancamentoRepository        │
+    └───┬────────────────────────────────────────────────────┘
+        │
+        │ Inversão de Dependência ativa a classe concreta
+        ▼
+    ┌────────────────────────────────────────────────────────┐
+    │ CaixaFluxo.Infrastructure -> LancamentoRepository      │
+    └──────┬─────────────────────────────────────────────────┘
+           │
+           │ Escrita assíncrona não bloqueante
+           ▼
+    ┌────────────────────────────────────────────────────────┐
+    │ CaixaFluxo.Infrastructure -> InMemoryDbContext         │
+    │ ──► [ Persistência ] ──► Armazena no ConcurrentBag     │
+    └────────────────────────────────────────────────────────┘
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas
