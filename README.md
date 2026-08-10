@@ -126,7 +126,7 @@ Para subir o servidor localmente:
 ```bash
 dotnet run --project CaixaFluxo.API/CaixaFluxo.API.csproj
 ```
-A API ficará disponível nos endereços padrão informados no console (ex: `http://localhost:5000` ou `https://localhost:5001`).
+A API ficará disponível nos endereços padrão informados no console (ex: `http://localhost:5295`).
 
 ---
 

@@ -22,7 +22,7 @@ interface ResultadoRequest {
 })
 export class TesteCargaComponent {
   apiUrl: string = 'http://localhost:5295/api/lancamentos'; 
-  volumeTestes: number = 2; 
+  volumeTestes: number = 50; 
   executando: boolean = false;
   tempoTotal: number = 0;
   taxaSucesso: number = 0;
