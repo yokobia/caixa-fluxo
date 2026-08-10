@@ -1,0 +1,22 @@
+<div class="container-teste">
+  <h2>🚀 Painel de Teste de Carga - Fluxo de Caixa</h2>
+  <div class="card-controle">
+    <label for="urlApi">URL da API Alvo:</label>
+    <input type="text" id="urlApi" [(ngModel)]="apiUrl" [disabled]="executando" class="input-url">
+    <div class="slider-container">
+      <label for="volume">Volume de Lançamentos Simultâneos: <strong>{{ volumeTestes }}</strong></label>
+      <input type="range" id="volume" min="0" max="100" [(ngModel)]="volumeTestes" [disabled]="executando" class="slider">
+    </div>
+    <button (click)="iniciarTesteCarga()" [disabled]="executando || volumeTestes === 0" class="btn-disparar">
+      {{ executando ? 'Disparando Lote...' : 'Disparar Carga Concorrente ⚡' }}
+    </button>
+  </div>
+  <div class="dashboard-resultados" *ngIf="historico.length > 0">
+    <h3>📊 Métricas do Servidor</h3>
+    <div class="grid-metricas">
+      <div class="metrica-card"><span>Tempo Total do Lote</span><strong>{{ tempoTotal }} ms</strong></div>
+      <div class="metrica-card"><span>Taxa de Sucesso</span><strong>{{ taxaSucesso }}%</strong></div>
+      <div class="metrica-card"><span>Sucessos / Erros</span><strong>{{ totalSucessos }} ✅ | {{ totalErros }} ❌</strong></div>
+    </div>
+  </div>
+</div>

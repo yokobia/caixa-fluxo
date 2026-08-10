@@ -11,14 +11,15 @@ Este projeto consiste em uma aplicação de controle de fluxo de caixa para come
 
 ## 🏛️ Arquitetura do Sistema
 
-A aplicação foi estruturada seguindo os princípios de **Clean Architecture** (Arquitetura Limpa) e os conceitos do **SOLID**, garantindo o desacoplamento evidente entre as camadas e facilitando a manutenção e evolução do software.
+O ecossistema foi desenvolvido separando rigidamente as responsabilidades. O backend foi estruturado seguindo os princípios de **Clean Architecture** (Arquitetura Limpa) e os conceitos do **SOLID**, garantindo o desacoplamento evidente entre as camadas e facilitando a manutenção e evolução do software. O frontend foi acoplado na raiz de forma totalmente independente.
 
 *   📂 **CaixaFluxoDesafio** (Pasta Raiz)
     *   📂 **CaixaFluxo.Domain:** Entidades de negócio e regras puras (Isolada)
-    *   📂 **CaixaFluxo.Application:** Casos de uso (Use Cases), DTOs, Validadores e Interfaces
+    *   📂 **CaixaFluxo.Application:** Casos de uso (Services), DTOs, Validadores e Interfaces
     *   📂 **CaixaFluxo.Infrastructure:** Persistência em memória (ConcurrentBag) e Repositórios
     *   📂 **CaixaFluxo.API:** Controladores HTTP, Rotas REST e configuração de DI
     *   📂 **CaixaFluxo.Tests:** Testes Unitários automatizados com xUnit e Moq
+    *   📂 **CaixaFluxo.Dashboard:** Frontend minimalista em Angular para execução do teste de carga reativo
 
 ### 1. Diagrama de Camadas e Dependências (Clean Architecture)
 Este diagrama representa o isolamento do ecossistema. A regra de ouro aqui é: as camadas externas conhecem as internas, mas as internas nunca conhecem nada do mundo externo.
@@ -191,3 +192,35 @@ A API estará disponível para receber requisições através do endereço local
       "saldoConsolidado": 1300.50
     }
     ```
+
+---
+
+## 🖥️ Painel Frontend de Teste de Carga (Angular)
+
+Para validar o requisito não-funcional de **resiliência e suporte a alta carga concorrente**, a solução conta com um painel de controle moderno desenvolvido em **Angular**. Esta interface reativa (baseada em RxJS) simula picos de acessos simultâneos de **0 a 100 requisições paralela**, auditando o tempo de resposta individual e a saúde do servidor.
+
+### 🚀 Como Executar o Frontend Localmente
+
+#### 1. Pré-requisitos
+Certifique-se de possuir o **Node.js (versão 20 LTS ou superior)** instalado em sua máquina.
+
+#### 2. Instalar as Dependências e Inicializar
+Abra um novo terminal na pasta raiz da solução e execute os seguintes comandos para navegar até o diretório do frontend, instalar o módulo reativo necessário e subir o servidor de desenvolvimento:
+```bash
+# Entrar na pasta do projeto Angular
+cd CaixaFluxo.Dashboard
+
+# Instalar o pacote de sincronização reativa de microtarefas (Zone.js)
+npm install zone.js
+
+# Inicializar o servidor local do Angular via NPX
+npx ng serve
+```
+
+#### 3. Realizar o Teste de Carga
+*   Abra o navegador no endereço indicado pelo console: `http://localhost:4200`
+*   Verifique se a porta da **URL da API Alvo** condiz com a porta ativa do seu backend .NET local (ex: `http://localhost:5295/api/lancamentos`).
+*   Utilize o controle deslizante (*slider*) para escolher o volume de requisições concorrentes (de 0 a 100).
+*   Clique em **"Disparar Carga Concorrente ⚡"**.
+
+O painel disparará o lote de requisições simultâneas em segundo plano e, graças ao monitoramento do `ChangeDetectorRef` injetado, atualizará a tela dinamicamente exibindo o **tempo total do lote (em ms)**, a **taxa de sucesso percentual** e um **log detalhado de auditoria** para cada envio recebido com status HTTP 201 pela API.

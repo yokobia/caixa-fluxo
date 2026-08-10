@@ -4,13 +4,13 @@
 
 [Bb]in/
 [Oo]bj/
-[Log]s/ 
+[Log]s/ 
 
 ### Arquivos gerados pelo User (configurações locais da IDE)
 
 *.user
 *.userosscache
-*.sln.docstates 
+*.sln.docstates 
 
 ### Pastas de ferramentas e cache do Visual Studio
 
@@ -23,7 +23,7 @@
 *.suo
 *.clw
 *.ncb
-*.aps 
+*.aps 
 
 ### [Ferramentas de Build e Pacotes]
 
@@ -33,13 +33,13 @@ packages/
 *.nuget.props
 *.nuget.targets
 project.lock.json
-project.fragment.lock.json 
+project.fragment.lock.json 
 
 ### Cache do Omnisharp e Rider (se usar outras IDEs)
 
 .idea/
 .krad/
-.paket/ 
+.paket/ 
 
 ### [Segurança e Configurações Sensíveis]
 
@@ -49,7 +49,7 @@ appsettings.Development.json
 appsettings.Local.json
 *.secrets.json
 .env
-.env.* 
+.env.* 
 
 ### [Sistema Operacional]
 
@@ -59,3 +59,17 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 .DS_Store
+
+### [Frontend - Node.js / Angular]
+
+### Dependências locais e pacotes baixados
+
+**/node_modules/
+npm-debug.log*
+
+### Pastas de compilação, distribuição e cache de ferramentas
+
+**/.angular/
+**/.vite/
+**/dist/
+**/out-tsc/

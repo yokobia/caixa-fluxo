@@ -3,6 +3,17 @@ using CaixaFluxo.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuração do CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("LiberarAngularLocal", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // Permite estritamente o seu Angular local
+              .AllowAnyMethod()                     // Permite POST, GET, OPTIONS, etc.
+              .AllowAnyHeader();                    // Permite cabeçalhos HTTP como Content-Type
+    });
+});
+
 // Inversão de dependência
 builder.Services.AddApplicationStructure();
 builder.Services.AddInfrastructureStructure();
@@ -10,6 +21,9 @@ builder.Services.AddInfrastructureStructure();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+// Ativa o middleware do CORS
+app.UseCors("LiberarAngularLocal");
 
 app.UseHttpsRedirection();
 
