@@ -129,6 +129,33 @@ A API ficará disponível nos endereços padrão informados no console (ex: `htt
 
 ---
 
+## 🐳 Executando a Aplicação via Docker Container
+
+Caso você possua o Docker instalado em sua máquina local, a aplicação já está totalmente configurada e otimizada com suporte a **Multi-stage builds**. O arquivo `Dockerfile` na raiz orquestra a compilação de todas as camadas em um ambiente isolado do Linux e gera uma imagem final ultra leve contendo apenas o runtime necessário.
+
+### 1. Construir a Imagem do Container
+Abra o terminal na pasta raiz da solução (onde se encontra o arquivo `Dockerfile`) e execute o comando abaixo para compilar o ecossistema:
+```bash
+docker build -t desafio-caixa-fluxo:latest .
+```
+
+### 2. Iniciar o Container Mapeando as Portas
+Após a compilação da imagem com sucesso, execute o comando a seguir para subir o servidor da API em segundo plano:
+```bash
+docker run -d -p 8080:8080 --name api-fluxo-caixa desafio-caixa-fluxo:latest
+```
+
+### 3. Validar a Execução e Testar
+A API estará disponível para receber requisições através do endereço local na porta `8080`:
+
+*   **Endpoint de Verificação (Healthcheck):** Faça um `GET` para `http://localhost:8080/health`
+*   **Criar Lançamento:** Faça um `POST` para `http://localhost:8080/api/lancamentos`
+*   **Consultar Relatório:** Faça um `GET` para `http://localhost:8080/api/lancamentos/consolidado`
+
+*(Nota: Como o ecossistema de Web API do .NET não possui páginas ou visualizações padrão mapeadas na URL raiz, o acesso direto a `http://localhost:8080/` retornará um status HTTP 404 de rota não encontrada por design. Utilize os caminhos completos listados acima para testes).*
+
+---
+
 ## 🛣️ Endpoints da API (Como Testar)
 
 ### 1. Registrar um Lançamento (Crédito ou Débito)
