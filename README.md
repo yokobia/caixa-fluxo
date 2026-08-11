@@ -224,3 +224,13 @@ npx ng serve
 *   Clique em **"Disparar Carga Concorrente ⚡"**.
 
 O painel disparará o lote de requisições simultâneas em segundo plano e, graças ao monitoramento do `ChangeDetectorRef` injetado, atualizará a tela dinamicamente exibindo o **tempo total do lote (em ms)**, a **taxa de sucesso percentual** e um **log detalhado de auditoria** para cada envio recebido com status HTTP 201 pela API.
+
+---
+
+## 🚀 Melhorias Futuras
+
+Como proposta de evolução da plataforma para cenários de alta escalabilidade e produção corporativa, foram mapeadas as seguintes oportunidades de melhoria arquitetural:
+
+*   **Mensageria Assíncrona:** Introdução de um broker de mensagens (como RabbitMQ ou NATS) para processar os lançamentos em segundo plano através de filas, aumentando a resiliência sob picos de carga.
+*   **Orquestração com Kubernetes:** Migração da infraestrutura para containers orquestrados em um cluster Kubernetes, permitindo escalonamento automático e alta disponibilidade da API.
+*   **Padrão CQRS:** Separação das operações de escrita (lançamentos) e leitura (relatório consolidado) em fluxos independentes, garantindo que a falha em um serviço não impacte o funcionamento do outro.
